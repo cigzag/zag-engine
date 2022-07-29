@@ -1,5 +1,7 @@
 #pragma once
 
+// Throughout the engine you will find functions defined with a K infront, this is due to being based off of Kohi's Game engine and their writing rules.
+
 // Unsigned int types.
 typedef unsigned char u8;
 typedef unsigned short u16;
