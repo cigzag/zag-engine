@@ -1,5 +1,6 @@
 #include "logger.h"
 #include "asserts.h"
+#include "platform/platform.h"
 
 // TODO: temporary
 #include <stdio.h>
@@ -16,16 +17,20 @@ b8 initialize_logging() {
 
 void shutdown_logging() {
     // TODO: Cleanup logging/write queued entries.
+
+
 }
 
 // Not to be used directly, for other logging functions.
 void log_output(log_level level, const char* message, ...) {
     const char* level_strings[6] = {"[FATAL]: ", "[ERROR]: ", "[WARN]: ", "[INFO]: ", "[DEBUG]: ", "[TRACE]: "};
+    b8 is_error = level < LOG_LEVEL_WARN;
     // FIXME: b8 is_error = level < 2;
 
     // FIXME: Technically imposes a 32k character limit on a single log entry, but yk.
     // SILLY, DON'T DO THAT!!!!
-    char out_message[32000];
+    const i32 msg_length = 32000;
+    char out_message[msg_length];
     memset(out_message, 0, sizeof(out_message));
 
     // Format the original message
@@ -37,8 +42,12 @@ void log_output(log_level level, const char* message, ...) {
     char out_message2[32000];
     sprintf(out_message2, "%s%s\n", level_strings[level], out_message);
 
-    // TODO: Temporary, will become platform specific.
-    printf("%s", out_message2); // Print new formatted message with appended tag.
+    // Platform specific output.
+    if(is_error) {
+        platform_console_write_error(out_message, level);
+    } else {
+        platform_console_write(out_message, level);
+    }
 }
 
 // Not every header file needs a C file, especially for only one method.
