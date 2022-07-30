@@ -6,7 +6,7 @@ typedef struct platform_state {
     void* internal_state; // typeless
 } platform_state;
 
-KAPI b8 platform_startup(
+b8 platform_startup(
     platform_state* plat_state,
     const char* application_name, // for windowed OS's
     i32 x,
@@ -14,12 +14,13 @@ KAPI b8 platform_startup(
     i32 width,
     i32 height);
 
-KAPI void platform_shutdown(platform_state* plat_state);
+void platform_shutdown(platform_state* plat_state);
 
-KAPI b8 platform_pump_messages(platform_state* plat_state);
+b8 platform_pump_messages(platform_state* plat_state);
 
-void* platform_allocate(u64 size, b8 alligned);
-void platform_free(void* block, b8 alligned);
+// FIXME: We don't want platform code pointed to usercode.
+KAPI void* platform_allocate(u64 size, b8 alligned);
+KAPI void platform_free(void* block, b8 alligned);
 void* platform_zero_memory(void* block, u64 size);
 void* platform_copy_memory(void* dest, const void* source, u64 size);
 void* platform_set_memory(void* dest, i32 value, u64 size);

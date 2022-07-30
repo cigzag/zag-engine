@@ -44,9 +44,9 @@ void log_output(log_level level, const char* message, ...) {
 
     // Platform specific output.
     if(is_error) {
-        platform_console_write_error(out_message, level);
+        platform_console_write_error(out_message2, level);
     } else {
-        platform_console_write(out_message, level);
+        platform_console_write(out_message2, level);
     }
 }
 
