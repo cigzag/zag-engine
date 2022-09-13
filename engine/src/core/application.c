@@ -5,6 +5,7 @@
 #include "platform/platform.h"
 
 #include "core/kmemory.h"
+#include "core/event.h"
 
 // TODO: Add more things required for application state.
 typedef struct application_state {
@@ -42,6 +43,11 @@ b8 application_create(game* game_inst) {
     app_state.is_running = TRUE;
     // TODO: Add suspendion later.
     app_state.is_suspended = FALSE; // Application can enter when we're not doing work like drawing, ex: minimizing, window is in background, etc.
+
+    if(!event_intialize()) {
+        KERROR("Event system failed initialization. Application cannot continue.");
+        return FALSE;
+    }
 
     if(!platform_startup(&app_state.platform, 
                         game_inst->app_config.name, 
@@ -89,6 +95,10 @@ b8 application_run() {
             break;
         }
     }
+
+    app_state.is_running = FALSE;
+
+    event_shutdown();
 
     platform_shutdown(&app_state.platform);
 
