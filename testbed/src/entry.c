@@ -2,9 +2,6 @@
 
 #include <entry.h>
 
-// FIXME: Remove this after testing.
-#include <platform/platform.h>
-
 // Executable is only going contain functions which it needs, we don't need to define specific stuff inside the executable.
 // We need to create an interface for what the game should contain, and how it gets the information from the engine.
 
@@ -25,7 +22,7 @@ b8 create_game(game* out_game) {
     out_game->on_resize = game_on_resize;
 
     // Create the game state, assign game state to our void pointer.
-    out_game->state = platform_allocate(sizeof(game_state), FALSE);
+    out_game->state = kallocate(sizeof(game_state), MEMORY_TAG_GAME);
 
     return TRUE;
 }
